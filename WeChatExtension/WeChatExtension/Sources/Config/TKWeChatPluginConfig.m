@@ -20,6 +20,7 @@ static NSString * const KPreventAsyncRevokeChatRoom = @"KPreventAsyncRevokeChatR
 static NSString * const KQuitMonitorChatRoom = @"KQuitMonitorChatRoom";
 static NSString * const kTKAutoReplyEnableKey = @"kTKAutoReplyEnableKey";
 static NSString * const kTKAutoAuthEnableKey = @"kTKAutoAuthEnableKey";
+static NSString * const kTKLaunchFromNew = @"kTKLaunchFromNew";
 static NSString * const kTKAutoLoginEnableKey = @"kTKAutoLoginEnableKey";
 static NSString * const kTKOnTopKey = @"kTKOnTopKey";
 static NSString * const kTKForbidCheckVersionKey = @"kTKForbidCheckVersionKey";
@@ -28,6 +29,7 @@ static NSString * const kTKCheckUpdateWechatEnableKey = @"kTKCheckUpdateWechatEn
 static NSString * const kTKSystemBrowserEnableKey = @"kTKSystemBrowserEnableKey";
 static NSString * const kTKWeChatResourcesPath = @"/Applications/WeChat.app/Contents/MacOS/WeChatExtension.framework/Resources/";
 static NSString * const kTKWeChatRemotePlistPath = @"https://raw.githubusercontent.com/MustangYM/WeChatExtension-ForMac/master/WeChatExtension/WeChatExtension/Base.lproj/Info.plist";
+static NSString * const kisAllowMoreOpenBaby = @"kisAllowMoreOpenBaby";
 
 @interface TKWeChatPluginConfig ()
 
@@ -58,6 +60,7 @@ static NSString * const kTKWeChatRemotePlistPath = @"https://raw.githubuserconte
         _preventSelfRevokeEnable = [[NSUserDefaults standardUserDefaults] boolForKey:kTKPreventSelfRevokeEnableKey];
         _autoReplyEnable = [[NSUserDefaults standardUserDefaults] boolForKey:kTKAutoReplyEnableKey];
         _autoAuthEnable = [[NSUserDefaults standardUserDefaults] boolForKey:kTKAutoAuthEnableKey];
+        _launchFromNew = [[NSUserDefaults standardUserDefaults] boolForKey:kTKLaunchFromNew];
         _autoLoginEnable = [[NSUserDefaults standardUserDefaults] boolForKey:kTKAutoLoginEnableKey];
         _onTop = [[NSUserDefaults standardUserDefaults] boolForKey:kTKOnTopKey];
         _forbidCheckVersion = [[NSUserDefaults standardUserDefaults] boolForKey:kTKForbidCheckVersionKey];
@@ -68,8 +71,16 @@ static NSString * const kTKWeChatRemotePlistPath = @"https://raw.githubuserconte
         _preventAsyncRevokeSignal = [[NSUserDefaults standardUserDefaults] boolForKey:KPreventAsyncRevokeSignal];
         _preventAsyncRevokeChatRoom = [[NSUserDefaults standardUserDefaults] boolForKey:KPreventAsyncRevokeChatRoom];
         _quitMonitorEnable = [[NSUserDefaults standardUserDefaults] boolForKey:KQuitMonitorChatRoom];
+        _isAllowMoreOpenBaby = [[NSUserDefaults standardUserDefaults] boolForKey:kisAllowMoreOpenBaby];
     }
     return self;
+}
+
+- (void)setIsAllowMoreOpenBaby:(BOOL)isAllowMoreOpenBaby
+{
+    _isAllowMoreOpenBaby = isAllowMoreOpenBaby;
+    [[NSUserDefaults standardUserDefaults] setBool:isAllowMoreOpenBaby forKey:kisAllowMoreOpenBaby];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setPreventRevokeEnable:(BOOL)preventRevokeEnable {
@@ -93,6 +104,13 @@ static NSString * const kTKWeChatRemotePlistPath = @"https://raw.githubuserconte
 - (void)setAutoAuthEnable:(BOOL)autoAuthEnable {
     _autoAuthEnable = autoAuthEnable;
     [[NSUserDefaults standardUserDefaults] setBool:autoAuthEnable forKey:kTKAutoAuthEnableKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setLaunchFromNew:(BOOL)launchFromNew
+{
+    _launchFromNew = launchFromNew;
+    [[NSUserDefaults standardUserDefaults] setBool:_launchFromNew forKey:kTKLaunchFromNew];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -410,7 +428,7 @@ static NSString * const kTKWeChatRemotePlistPath = @"https://raw.githubuserconte
 
 - (NSString *)languageSetting:(NSString *)chinese english:(NSString *)english
 {
-    if (_languageType == PluginLanguageTypeZH) {
+    if ([TKWeChatPluginConfig sharedConfig].languageType == PluginLanguageTypeZH) {
         return chinese;
     }
     return english;

@@ -1,8 +1,9 @@
+
 <p align="center">
 <img src="https://github.com/MustangYM/WeChatExtensionSources/blob/master/Pictures/face.png" width="1000px"/>
 </p>
 
-![platform](https://img.shields.io/badge/platform-macos-lightgrey.svg)  [![release](https://img.shields.io/badge/release-v2.3.0-brightgreen.svg)](https://github.com/MustangYM/WeChatExtension-ForMac/releases)  ![support](https://img.shields.io/badge/support-wechat%202.3.29-blue.svg)
+![platform](https://img.shields.io/badge/platform-macos-lightgrey.svg)  [![release](https://img.shields.io/badge/release-v2.4.0-brightgreen.svg)](https://github.com/MustangYM/WeChatExtension-ForMac/releases)  ![support](https://img.shields.io/badge/support-wechat%202.4.0-blue.svg)
 
 支持[企业微信](https://github.com/MustangYM/WeChatICU-ForMac),由此进.
 
@@ -10,7 +11,7 @@
 - 适用于Mac版的WeChat拓展功能. 1.7.5代码来自于WeChatPlugin, 对[tk](https://github.com/TKkk-iOSer)在此表示感谢!
 
 ## 最新支持版本
--  mac版微信2.3.29
+-  mac版微信2.4.0
 
 ## 同时支持自定义回复和AI自动撩妹
 - 腾讯AI人工智能(ZZ)自动回复, 能理解上下文语义, 在收到指定对象消息后的5~8秒内自动回复消息(大部分情况下比较智能, 偶尔智障).
@@ -64,12 +65,13 @@
 <img src="https://github.com/MustangYM/WeChatExtensionSources/blob/master/Pictures/WX20190726-183915%402x.png" width="800px"/>
 </p>
 
-## 普通安装(clone最新版本并安装)
+## 怎么安装?
+### 1.普通安装(clone最新版本并安装)
 ```
 sudo rm -r -f WeChatExtension-ForMac && git clone --depth=1 https://github.com/MustangYM/WeChatExtension-ForMac && cd WeChatExtension-ForMac/WeChatExtension/Rely && ./Install.sh
 ```
 
-## 懒癌版安装
+### 2.懒癌版安装
 
 <p align="left">
 <img src="https://avatars1.githubusercontent.com/u/5035625?s=400&v=4" width="100px"/>
@@ -86,31 +88,31 @@ curl -o- -L https://raw.githubusercontent.com/lmk123/oh-my-wechat/master/install
 安装完成后会自动安装微信插件，可以访问 [Oh My WeChat 的项目主页](https://github.com/lmk123/oh-my-wechat#oh-my-wechat)查看更多用法。
 
 
-## 手动安装
+### 3.手动安装
 
-#### 1. 确保你的Mac上已经安装了微信App.
+#### 3.1. 确保你的Mac上已经安装了微信App.
 
-#### 2. 下载本项目到你的电脑里, 并双击打开.
+#### 3.2. 下载本项目到你的电脑里, 并双击打开.
 <p align="center">
 <img src="https://github.com/MustangYM/WeChatExtensionSources/blob/master/Pictures/WX20190619-112238.png" width="800px"/>
 </p>
 
-##### 3. 依次打开文件夹
+#### 3.3. 依次打开文件夹
 <p align="center">
 <img src="https://github.com/MustangYM/WeChatExtensionSources/blob/master/Pictures/WX20190619-113413%402x.png" width="800px"/>
 </p>
 
-#### 4. 打开你电脑中的终端工具
+#### 3.4. 打开你电脑中的终端工具
 <p align="center">
 <img src="https://github.com/MustangYM/WeChatExtensionSources/blob/master/Pictures/WX20190619-113911%402x.png" width="800px"/>
 </p>
  
-#### 5. 在Rely/Install.sh执行这个安装脚本
+#### 3.5. 在Rely/Install.sh执行这个安装脚本
 <p align="center">
 <img src="https://github.com/MustangYM/WeChatExtensionSources/blob/master/Pictures/QQ20190425-155120%402x.png" width="800px"/>
 </p>
 
-#### 6. 重启微信, 安装完成.
+#### 3.6. 重启微信, 安装完成.
 
 ## 怎么卸载?
 - 自动卸载
@@ -162,6 +164,7 @@ sudo rm -r -f WeChatExtension-ForMac && git clone --depth=1 https://github.com/M
 
 ## 更新日志
 ```
+2020-02-25 兼容微信2.4.0, 修复小程序不能打开BUG, 并兼容微信多开
 2019-12-27 退群提醒
 2019-12-23 发布2.3.0版本, 新增显示小程序信息, 转账金额
 2019-12-22 还原老版自动回复, 优化AI自动回复界面
@@ -199,4 +202,7 @@ This project exists thanks to all the people who contribute.
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/mustangym666#backer)]
 
 <a href="https://opencollective.com/mustangym666#backers" target="_blank"><img src="https://opencollective.com/mustangym666/backers.svg?width=890"></a>
+
+## 交流QQ群
+239049786
 
