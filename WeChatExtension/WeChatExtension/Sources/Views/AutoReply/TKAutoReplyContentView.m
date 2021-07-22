@@ -2,12 +2,14 @@
 //  TKAutoReplyContentView.m
 //  WeChatExtension
 //
-//  Created by WeChatExtension on 2017/8/20.
-//  Copyright © 2017年 WeChatExtension. All rights reserved.
+//  Created by WeChatExtension on 2019/8/20.
+//  Copyright © 2019年 WeChatExtension. All rights reserved.
 //
 
 #import "TKAutoReplyContentView.h"
 #import "WeChatPlugin.h"
+#import "YMThemeManager.h"
+#import "YMIMContactsManager.h"
 
 @interface TKAutoReplyContentView () <NSTextFieldDelegate>
 
@@ -27,7 +29,8 @@
 
 @implementation TKAutoReplyContentView
 
-- (instancetype)init {
+- (instancetype)init
+{
     self = [super init];
     if (self) {
         [self initSubviews];
@@ -35,14 +38,18 @@
     return self;
 }
 
-- (void)initSubviews {
+- (void)initSubviews
+{
+    
+    
     self.enableSpecificReplyBtn = ({
         NSButton *btn = [NSButton tk_checkboxWithTitle:YMLocalizedString(@"assistant.autoReply.enableSpecific") target:self action:@selector(clickEnableSpecificReplyBtn:)];
         btn.frame = NSMakeRect(20, 0, 400, 20);
-        
+        [YMThemeManager changeButtonTheme:btn];
         btn;
     });
 
+    
     self.selectSessionButton = ({
         NSButton *btn = [NSButton tk_buttonWithTitle:YMLocalizedString(@"assistant.autoReply.selectSpecific") target:self action:@selector(clickSelectSessionButton:)];
         btn.frame = NSMakeRect(200, 0, 150, 20);
@@ -54,28 +61,28 @@
     self.enableRegexBtn = ({
         NSButton *btn = [NSButton tk_checkboxWithTitle:YMLocalizedString(@"assistant.autoReply.enableRegEx") target:self action:@selector(clickEnableRegexBtn:)];
         btn.frame = NSMakeRect(20, 25, 400, 20);
-        
+        [YMThemeManager changeButtonTheme:btn];
         btn;
     });
     
     self.enableGroupReplyBtn = ({
         NSButton *btn = [NSButton tk_checkboxWithTitle:YMLocalizedString(@"assistant.autoReply.enableGroup") target:self action:@selector(clickEnableGroupBtn:)];
         btn.frame = NSMakeRect(20, 50, 400, 20);
-        
+        [YMThemeManager changeButtonTheme:btn];
         btn;
     });
     
     self.enableSingleReplyBtn = ({
         NSButton *btn = [NSButton tk_checkboxWithTitle:YMLocalizedString(@"assistant.autoReply.enableSingle") target:self action:@selector(clickEnableSingleBtn:)];
         btn.frame = NSMakeRect(200, 50, 400, 20);
-        
+        [YMThemeManager changeButtonTheme:btn];
         btn;
     });
     
     self.enableDelayBtn = ({
         NSButton *btn = [NSButton tk_checkboxWithTitle:YMLocalizedString(@"assistant.autoReply.delay") target:self action:@selector(clickEnableDelayBtn:)];
         btn.frame = NSMakeRect(200, 25, 85, 20);
-        
+        [YMThemeManager changeButtonTheme:btn];
         btn;
     });
     
@@ -141,7 +148,8 @@
                         self.selectSessionButton]];
 }
 
-- (void)clickEnableSpecificReplyBtn:(NSButton *)btn {
+- (void)clickEnableSpecificReplyBtn:(NSButton *)btn
+{
     self.selectSessionButton.hidden = !btn.state;
     self.enableGroupReplyBtn.hidden = btn.state;
     self.enableSingleReplyBtn.hidden = btn.state;
@@ -151,50 +159,61 @@
     self.model.enableSpecificReply = btn.state;
 }
 
-- (void)clickSelectSessionButton:(NSButton *)btn {
+- (void)clickSelectSessionButton:(NSButton *)btn
+{
     [self selectSessionAction];
 }
 
-- (void)clickEnableRegexBtn:(NSButton *)btn {
+- (void)clickEnableRegexBtn:(NSButton *)btn
+{
     self.model.enableRegex = btn.state;
 }
 
-- (void)clickEnableGroupBtn:(NSButton *)btn {
+- (void)clickEnableGroupBtn:(NSButton *)btn
+{
     self.model.enableGroupReply = btn.state;
     if (btn.state) {
         self.model.enable = YES;
-    } else if(!self.model.enableSingleReply) {
+    } else if (!self.model.enableSingleReply) {
         self.model.enable = NO;
     }
     
-    if (self.endEdit) self.endEdit();
+    if (self.endEdit) {
+         self.endEdit();
+    }
 }
 
-- (void)clickEnableSingleBtn:(NSButton *)btn {
+- (void)clickEnableSingleBtn:(NSButton *)btn
+{
     self.model.enableSingleReply = btn.state;
     if (btn.state) {
         self.model.enable = YES;
-    } else if(!self.model.enableGroupReply) {
+    } else if (!self.model.enableGroupReply) {
         self.model.enable = NO;
     }
-    if (self.endEdit) self.endEdit();
+    if (self.endEdit) {
+         self.endEdit();
+    }
 }
 
-- (void)clickEnableDelayBtn:(NSButton *)btn {
+- (void)clickEnableDelayBtn:(NSButton *)btn
+{
     self.model.enableDelay = btn.state;
 }
 
-- (void)viewDidMoveToSuperview {
+- (void)viewDidMoveToSuperview
+{
     [super viewDidMoveToSuperview];
     self.layer.backgroundColor = [kBG2 CGColor];
     self.layer.borderWidth = 1;
-    self.layer.borderColor = [TK_RGBA(0, 0, 0, 0.1) CGColor];
+    self.layer.borderColor = [YM_RGBA(0, 0, 0, 0.1) CGColor];
     self.layer.cornerRadius = 3;
     self.layer.masksToBounds = YES;
     [self.layer setNeedsDisplay];
 }
 
-- (void)setModel:(YMAutoReplyModel *)model {
+- (void)setModel:(YMAutoReplyModel *)model
+{
     _model = model;
     self.keywordTextField.stringValue = model.keyword != nil ? model.keyword : @"";
     self.autoReplyContentField.stringValue = model.replyContent != nil ? model.replyContent : @"";
@@ -210,31 +229,66 @@
     self.enableSingleReplyBtn.hidden = model.enableSpecificReply;
 }
 
-- (void)selectSessionAction {
+- (void)selectSessionAction
+{
     MMSessionPickerWindow *picker = [objc_getClass("MMSessionPickerWindow") shareInstance];
     [picker setType:1];
     [picker setShowsGroupChats:0x1];
     [picker setShowsOtherNonhumanChats:0];
     [picker setShowsOfficialAccounts:0];
     MMSessionPickerLogic *logic = [picker.listViewController valueForKey:@"m_logic"];
-    NSMutableOrderedSet *orderSet = [logic valueForKey:@"_selectedUserNamesSet"];
-
-    [orderSet addObjectsFromArray:self.model.specificContacts];
-    [picker.choosenViewController setValue:self.model.specificContacts forKey:@"selectedUserNames"];
+    NSMutableOrderedSet *orderSet = nil;
+    NSMutableArray *selectUsrs = nil;
+    if (LargerOrEqualVersion(@"3.1.0")) {
+        selectUsrs = [logic valueForKey:@"_selectedRows"];
+        if (!selectUsrs) {
+            selectUsrs = [NSMutableArray new];
+        }
+        [selectUsrs addObjectsFromArray:self.model.specificContacts];
+    } else if (LargerOrEqualLongVersion(@"2.4.2.148")) {
+        selectUsrs = [logic valueForKey:@"_selectedUserNames"];
+        if (!selectUsrs) {
+            selectUsrs = [NSMutableArray new];
+        }
+        [selectUsrs addObjectsFromArray:self.model.specificContacts];
+    } else {
+        orderSet = [logic valueForKey:@"_selectedUserNamesSet"];
+        if (!orderSet) {
+            orderSet = [NSMutableOrderedSet new];
+        }
+        [orderSet addObjectsFromArray:self.model.specificContacts];
+    }
+    
+    if (LargerOrEqualVersion(@"3.1.0")) {
+        NSMutableArray *arr = [NSMutableArray array];
+        [self.model.specificContacts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            MMSessionPickerRow *row = [objc_getClass("MMSessionPickerRow") new];
+            row.contact = [YMIMContactsManager getMemberInfo:obj];
+            [arr addObject:row];
+        }];
+        [picker.choosenViewController setValue:arr forKey:@"selectedRows"];
+    } else {
+        [picker.choosenViewController setValue:self.model.specificContacts forKey:@"selectedUserNames"];
+    }
     [picker beginSheetForWindow:self.window completionHandler:^(NSOrderedSet *a1) {
         NSMutableArray *array = [NSMutableArray array];
         [a1 enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [array addObject:obj];
+                [array addObject:obj];
         }];
         self.model.specificContacts = [array copy];
     }];
+    
 }
 
-- (void)controlTextDidEndEditing:(NSNotification *)notification {
-    if (self.endEdit) self.endEdit();
+- (void)controlTextDidEndEditing:(NSNotification *)notification
+{
+    if (self.endEdit) {
+         self.endEdit();
+    }
 }
 
-- (void)controlTextDidChange:(NSNotification *)notification {
+- (void)controlTextDidChange:(NSNotification *)notification
+{
     NSControl *control = notification.object;
     if (control == self.keywordTextField) {
         self.model.keyword = self.keywordTextField.stringValue;
@@ -245,7 +299,8 @@
     }
 }
 
-- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector {
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)commandSelector
+{
     BOOL result = NO;
     
     if (commandSelector == @selector(insertNewline:)) {
